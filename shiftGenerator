@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            text-align: center;
+            background-color: rgb(235, 235, 200);
+        }
+
+        .form {
+            width: 51vmax;
+            display: flex;
+            margin: 0 auto;
+        }
+
+        .inputForm {
+            width: 55vw;
+            background-color: beige;
+        }
+
+        .textForm {
+            width: 45vw;
+        }
+
+        .formRow,
+        .select {
+            display: flex;
+            margin-bottom: 1.7vh;
+        }
+
+        .formRow {
+            justify-content: left;
+            margin-left: 1.4vw;
+        }
+
+        .select {
+            justify-content: center;
+            margin-top: 1.2vh;
+        }
+
+        .formRow label,
+        .select label {
+            font-size: 1.2vw;
+            margin-bottom: 0.9vh;
+        }
+
+        .input {
+            height: 1.5em;
+            width: 2.5em;
+            font-size: 1.2vw;
+        }
+
+        .start {
+            width: 2.5em;
+            font-size: 1.2vw;
+        }
+
+        textarea {
+            font-size: 1.5vw;
+            margin-top: 1.2vw;
+        }
+
+        button {
+            font-size: 1.2vw;
+            cursor: pointer;
+            margin-bottom: 1.3vh;
+        }
+
+        #copy {
+            background-color: #06C755;
+            color: white;
+        }
+    </style>
+
+    <title>僕楽</title>
+</head>
+
+<body>
+    <header>
+        <h2>希望シフトくん</h2>
+    </header>
+
+    <main>
+        <div class="form">
+
+            <div class="inputForm" id="inputForm">
+                <div class="select">
+                    <select id="year">
+
+                    </select>
+                    <label>年</label>
+                    <select id="month">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <label>月</label>
+
+                    <select id="selectHalf">
+                        <option value="first">前半</option>
+                        <option value="second">後半</option>
+                    </select>
+                </div>
+
+                <button id="generate">確定</button>
+            </div>
+
+            <div class="textForm">
+                <textarea rows="19" cols="23" id="output" placeholder="左の回答欄に希望時刻入力
+                
+入力例
+9:00希望 -> 900
+14:30希望 -> 1430
+OFF希望 -> 空欄
+
+確定ボタン押下で出力
+
+---------出力例---------
+
+1月前半の希望シフトです
+
+1(月)9:00～14:30
+2(火)OFF
+3(水)7:00～10:00
+    ・
+    ・
+    ・"></textarea>
+                <button id="copy">コピーしてLINEを開く</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const japaneseDay = ["日", "月", "火", "水", "木", "金", "土"];
+
+        const today = new Date();
+        const year = document.getElementById("year");
+        const month = document.getElementById("month");
+        const generate = document.getElementById("generate");
+        const copy = document.getElementById("copy");
+        const output = document.getElementById("output");
+
+        var dayOfWeek = 0;
+        var half = 1;
+        var lastdate = 20;
+
+        var yearSelect = document.getElementById("year");
+        var thisYear = document.createElement("option");
+        thisYear.value = today.getFullYear();
+        thisYear.text = today.getFullYear();
+
+        var nextYear = document.createElement("option");
+        nextYear.value = today.getFullYear() + 1;
+        nextYear.text = today.getFullYear() + 1;
+
+        yearSelect.add(thisYear);
+        yearSelect.add(nextYear);
+
+        setmonth();
+        addDate();
+
+        // 期間に変更があった場合に更新
+        document.querySelectorAll(".select").forEach(select => {
+            select.addEventListener("change", event => {
+                date();
+                reset();
+            });
+        });
+
+        // 確定ボタン押下でシフト生成
+        generate.addEventListener("click", function () {
+            showShift();
+        });
+
+        // コピーしてLINEを開く
+        copy.addEventListener("click", function () {
+            navigator.clipboard.writeText(output.value);
+            window.open("https://line.me/R/msg/text/", "_blank");
+        });
+
+        // 入力欄の生成
+        function addDate() {
+            date();
+            let outputDay = dayOfWeek;
+            for (let i = half; i <= half + 8; i++) {
+                var formRow = document.createElement("div");
+                formRow.setAttribute("class", "formRow");
+                var parentDiv = document.getElementById("inputForm");
+                parentDiv.insertBefore(formRow, generate);
+
+                var leftDate = document.createElement("label");
+                var newContent = document.createTextNode(i + "(" + japaneseDay[outputDay] + ")");
+                leftDate.appendChild(newContent);
+                formRow.insertBefore(leftDate, formRow.firstChild);
+
+                var leftstart = document.createElement("input");
+                leftstart.setAttribute("type", "text");
+                leftstart.setAttribute("class", "input");
+                leftstart.setAttribute("id", i + "Start");
+                leftstart.setAttribute("placeholder", " OFF ");
+                formRow.insertBefore(leftstart, leftDate.nextSibling);
+
+                var rightTo = document.createElement("label");
+                rightTo.appendChild(document.createTextNode("～"));
+                formRow.insertBefore(rightTo, leftstart.nextSibling);
+
+                var leftEnd = document.createElement("input");
+                leftEnd.setAttribute("type", "text");
+                leftEnd.setAttribute("class", "input");
+                leftEnd.setAttribute("id", i + "End");
+                formRow.insertBefore(leftEnd, rightTo.nextSibling);
+
+                if (i + 9 <= lastdate.getDate()) {
+                    var rightDate = document.createElement("label");
+                    var newContent = document.createTextNode("　" + (i + 9) + "(" + japaneseDay[(outputDay + 2) % 7] + ")");
+                    rightDate.appendChild(newContent);
+                    formRow.insertBefore(rightDate, leftEnd.nextSibling);
+
+                    var shiftstart = document.createElement("input");
+                    shiftstart.setAttribute("type", "text");
+                    shiftstart.setAttribute("class", "input");
+                    shiftstart.setAttribute("id", (i + 9) + "Start");
+                    shiftstart.setAttribute("placeholder", " OFF ");
+                    formRow.insertBefore(shiftstart, rightDate.nextSibling);
+
+                    var leftTo = document.createElement("label");
+                    leftTo.appendChild(document.createTextNode("～"));
+                    formRow.insertBefore(leftTo, shiftstart.nextSibling);
+
+                    var shiftEnd = document.createElement("input");
+                    shiftEnd.setAttribute("type", "text");
+                    shiftEnd.setAttribute("class", "input");
+                    shiftEnd.setAttribute("id", (i + 9) + "End");
+                    formRow.insertBefore(shiftEnd, leftTo.nextSibling);
+                }
+
+                outputDay = (outputDay + 1) % 7;
+            }
+        }
+
+        // 現在の日にちから提出するシフト期間を設定
+        function setmonth() {
+            const selected = document.getElementById("selectHalf");
+            year.value = today.getFullYear();
+            month.value = today.getMonth() + 1;
+
+            if (today.getDate() > 5 && today.getDate() <= 20) {
+                month.value = (Number(month.value) % 12) + 1;
+                selected.value = "first";
+                if (today.getMonth() == 11) {
+                    year.value++;
+                }
+            } else {
+                if (today.getDate() > 20) {
+                    month.value = (Number(month.value) % 12) + 1;
+                    if (today.getMonth() == 11) {
+                        year.value++;
+                    }
+                }
+                selected.value = "second";
+            }
+        }
+
+        // 初期化
+        function reset() {
+            document.querySelectorAll(".formRow").forEach(formRow => formRow.remove());
+            addDate();
+        }
+
+        // 入力値を時刻表示(hh:mm)へ変換
+        function splitTime(value) {
+            if (!Number.isNaN(Number(value)) && (value >= 0 && value <= 2400)) {
+                str = String(Number(value));
+                return (str.slice(0, -2) + ":" + str.slice(-2));
+            } else {
+                return "不正";
+            }
+        }
+
+        // 生成スケジュール初日，最終日設定
+        function date() {
+            half = document.getElementById("selectHalf").value == "first" ? 1 : 16;
+            var firstdate = new Date(year.value, month.value - 1, half);
+            dayOfWeek = firstdate.getDay();
+            var last = (half == 1 ? 15 : 0);
+            lastdate = new Date(year.value, month.value - last / 15, last);
+        }
+
+        // 希望シフトを出力
+        function showShift() {
+            let outputDay = dayOfWeek;
+            output.value = (month.value + "月" + (document.getElementById("selectHalf").value == "first" ? "前半" : "後半") + "の希望シフトです\n\n");
+            let inputStart = "";
+            let inputEnd = "";
+
+            for (let i = half; i <= lastdate.getDate(); i++) {
+                if (document.getElementById(i + "Start").value == "") {
+                    inputStart = "OFF";
+                    inputEnd = "";
+                } else {
+                    inputStart = splitTime(document.getElementById(i + "Start").value) + "～";
+                    inputEnd = splitTime(document.getElementById(i + "End").value);
+                }
+                output.value += (i + "(" + japaneseDay[outputDay] + ")" + inputStart + inputEnd + ((i < lastdate.getDate()) ? "\n" : ""));
+                outputDay = (outputDay + 1) % 7;
+            }
+        }
+
+        // 入力欄のフォーカス遷移
+        window.addEventListener("keydown", event => {
+            let focusNow = document.activeElement.id;
+
+            // Enterキー，右矢印押下時
+            if (event.key == "Enter" || event.key == "ArrowRight") {
+                if (focusNow.includes("Start")) {
+                    if (document.getElementById(focusNow).value == "") {
+                        focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
+                    } else {
+                        focusNow = focusNow.replace("Start", "") + "End"
+                    }
+                } else if (focusNow.includes("End")) {
+                    focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
+                }
+
+                if (focusNow.includes(lastdate.getDate() + 1)) {
+                    focusNow = generate.id;
+                    if (event.key !== "ArrowRight") {
+                        showShift();
+                    }
+                }
+            }
+
+            // 左矢印押下時
+            if (event.key == "ArrowLeft" && focusNow !== half + "Start") {
+                if (focusNow.includes("End")) {
+                    focusNow = focusNow.replace("End", "Start");
+                } else if (focusNow.includes("Start")) {
+                    focusNow = Number(focusNow.replace("Start", "")) - 1 + "End";
+                    if (document.getElementById(focusNow).value == "") {
+                        focusNow = focusNow.replace("End", "Start");
+                    }
+                } else if (focusNow == "generate") {
+                    focusNow = lastdate.getDate() + "End";
+                }
+            }
+
+            // 上矢印押下時
+            if (event.key == "ArrowUp" && !focusNow.includes(half)) {
+                if (focusNow.includes("Start")) {
+                    focusNow = Number(focusNow.replace("Start", "")) - 1 + "Start";
+                } else if (focusNow.includes("End")) {
+                    focusNow = Number(focusNow.replace("End", "")) - 1 + "End";
+                }
+            }
+
+            // 下矢印押下時
+            if (event.key == "ArrowDown" && !focusNow.includes(lastdate.getDate())) {
+                if (focusNow.includes("Start")) {
+                    focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
+                } else if (focusNow.includes("End")) {
+                    focusNow = Number(focusNow.replace("End", "")) + 1 + "End";
+                }
+            }
+
+            // Enterキー，矢印キー押下で対応する入力欄へフォーカス
+            if (event.key == "Enter" || event.key.includes("Arrow")) {
+                document.getElementById(focusNow).focus();
+            }
+
+            // BackSpaceキー，Deleteキー押下でフォーカスされた入力欄の入力値を削除
+            if ((event.key == "Delete" || event.key == "Backspace") && document.getElementById(focusNow) !== output) {
+                document.getElementById(focusNow).value = "";
+            }
+        });
+    </script>
+</body>
+
+</html>
