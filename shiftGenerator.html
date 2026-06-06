@@ -27,7 +27,8 @@
             width: 45vw;
         }
 
-        .formRow, .select {
+        .formRow,
+        .select {
             display: flex;
             margin-bottom: 1.7vh;
         }
@@ -42,7 +43,8 @@
             margin-top: 1.2vh;
         }
 
-        .formRow label, .select label {
+        .formRow label,
+        .select label {
             font-size: 1.2vw;
             margin-bottom: 0.9vh;
         }
@@ -205,21 +207,23 @@ OFF希望 -> 空欄
                 leftDate.appendChild(newContent);
                 formRow.insertBefore(leftDate, formRow.firstChild);
 
-                var leftstart = document.createElement("input");
-                leftstart.setAttribute("type", "text");
-                leftstart.setAttribute("class", "input");
-                leftstart.setAttribute("id", i + "Start");
-                leftstart.setAttribute("placeholder", " OFF ");
-                formRow.insertBefore(leftstart, leftDate.nextSibling);
+                var leftStart = document.createElement("input");
+                leftStart.setAttribute("type", "text");
+                leftStart.setAttribute("class", "input");
+                leftStart.setAttribute("id", i + "Start");
+                leftStart.setAttribute("placeholder", " OFF ");
+                leftStart.setAttribute("inputmode", "numeric");
+                formRow.insertBefore(leftStart, leftDate.nextSibling);
 
                 var rightTo = document.createElement("label");
                 rightTo.appendChild(document.createTextNode("～"));
-                formRow.insertBefore(rightTo, leftstart.nextSibling);
+                formRow.insertBefore(rightTo, leftStart.nextSibling);
 
                 var leftEnd = document.createElement("input");
                 leftEnd.setAttribute("type", "text");
                 leftEnd.setAttribute("class", "input");
                 leftEnd.setAttribute("id", i + "End");
+                leftStart.setAttribute("inputmode", "numeric");
                 formRow.insertBefore(leftEnd, rightTo.nextSibling);
 
                 if (i + 9 <= lastdate.getDate()) {
@@ -233,16 +237,18 @@ OFF希望 -> 空欄
                     shiftstart.setAttribute("class", "input");
                     shiftstart.setAttribute("id", (i + 9) + "Start");
                     shiftstart.setAttribute("placeholder", " OFF ");
+                    leftStart.setAttribute("inputmode", "numeric");
                     formRow.insertBefore(shiftstart, rightDate.nextSibling);
-
+                    
                     var leftTo = document.createElement("label");
                     leftTo.appendChild(document.createTextNode("～"));
                     formRow.insertBefore(leftTo, shiftstart.nextSibling);
-
+                    
                     var shiftEnd = document.createElement("input");
                     shiftEnd.setAttribute("type", "text");
                     shiftEnd.setAttribute("class", "input");
                     shiftEnd.setAttribute("id", (i + 9) + "End");
+                    leftStart.setAttribute("inputmode", "numeric");
                     formRow.insertBefore(shiftEnd, leftTo.nextSibling);
                 }
 
