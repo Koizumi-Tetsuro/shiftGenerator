@@ -140,7 +140,7 @@ OFF希望 -> 空欄
     ・
     ・"></textarea>
                 <div>
-                    <button id="openLine">コピーしてLINEを開く</button>
+                    <button id="openLine">LINEで転送</button>
                 </div>
             </div>
         </div>
@@ -188,9 +188,9 @@ OFF希望 -> 空欄
             showShift();
         });
 
-        // コピーしてLINEを開く
+        // LINEを開く
         openLine.addEventListener("click", function () {
-            location.href("https://line.me/R/msg/text/?" + output.value);
+            location.href = "https://line.me/R/msg/text/?" + output.value;
         });
 
         // 入力欄の生成
