@@ -71,7 +71,7 @@
             margin-bottom: 1.3vh;
         }
 
-        #copy {
+        #openLine {
             background-color: #06C755;
             color: white;
         }
@@ -140,7 +140,7 @@ OFF希望 -> 空欄
     ・
     ・"></textarea>
                 <div>
-                    <button id="copy">コピーしてLINEを開く</button>
+                    <button id="openLine">コピーしてLINEを開く</button>
                 </div>
             </div>
         </div>
@@ -153,7 +153,7 @@ OFF希望 -> 空欄
         const year = document.getElementById("year");
         const month = document.getElementById("month");
         const generate = document.getElementById("generate");
-        const copy = document.getElementById("copy");
+        const openLine = document.getElementById("openLine");
         const output = document.getElementById("output");
 
         var dayOfWeek = 0;
@@ -189,9 +189,8 @@ OFF希望 -> 空欄
         });
 
         // コピーしてLINEを開く
-        copy.addEventListener("click", function () {
-            navigator.clipboard.writeText(output.value);
-            window.open("https://line.me/R/msg/text/", "_blank");
+        openLine.addEventListener("click", function () {
+            location.href("https://line.me/R/msg/text/?" + output.value);
         });
 
         // 入力欄の生成
@@ -225,7 +224,7 @@ OFF希望 -> 空欄
                 leftEnd.setAttribute("type", "text");
                 leftEnd.setAttribute("class", "input");
                 leftEnd.setAttribute("id", i + "End");
-                leftStart.setAttribute("inputmode", "numeric");
+                leftEnd.setAttribute("inputmode", "numeric");
                 formRow.insertBefore(leftEnd, rightTo.nextSibling);
 
                 if (i + 9 <= lastdate.getDate()) {
@@ -234,23 +233,23 @@ OFF希望 -> 空欄
                     rightDate.appendChild(newContent);
                     formRow.insertBefore(rightDate, leftEnd.nextSibling);
 
-                    var shiftstart = document.createElement("input");
-                    shiftstart.setAttribute("type", "text");
-                    shiftstart.setAttribute("class", "input");
-                    shiftstart.setAttribute("id", (i + 9) + "Start");
-                    shiftstart.setAttribute("placeholder", " OFF ");
-                    leftStart.setAttribute("inputmode", "numeric");
-                    formRow.insertBefore(shiftstart, rightDate.nextSibling);
+                    var shiftStart = document.createElement("input");
+                    shiftStart.setAttribute("type", "text");
+                    shiftStart.setAttribute("class", "input");
+                    shiftStart.setAttribute("id", (i + 9) + "Start");
+                    shiftStart.setAttribute("placeholder", " OFF ");
+                    shiftStart.setAttribute("inputmode", "numeric");
+                    formRow.insertBefore(shiftStart, rightDate.nextSibling);
                     
                     var leftTo = document.createElement("label");
                     leftTo.appendChild(document.createTextNode("～"));
-                    formRow.insertBefore(leftTo, shiftstart.nextSibling);
+                    formRow.insertBefore(leftTo, shiftStart.nextSibling);
                     
                     var shiftEnd = document.createElement("input");
                     shiftEnd.setAttribute("type", "text");
                     shiftEnd.setAttribute("class", "input");
                     shiftEnd.setAttribute("id", (i + 9) + "End");
-                    leftStart.setAttribute("inputmode", "numeric");
+                    shiftEnd.setAttribute("inputmode", "numeric");
                     formRow.insertBefore(shiftEnd, leftTo.nextSibling);
                 }
 
