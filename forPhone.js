@@ -201,3 +201,42 @@ window.addEventListener("keydown", event => {
         document.getElementById(focusNow).focus();
     }
 });
+
+        // 入力欄のフォーカス遷移
+        window.addEventListener("keydown", event => {
+            let focusNow = document.activeElement.id;
+
+            // Enterキー，下矢印押下時
+            if (event.key == "Enter" || event.key == "ArrowDown") {
+                if (focusNow.includes("Start")) {
+                    if (document.getElementById(focusNow).value == "") {
+                        focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
+                    } else {
+                        focusNow = focusNow.replace("Start", "") + "End"
+                    }
+                } else if (focusNow.includes("End")) {
+                    focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
+                }
+
+                if (focusNow.includes(lastdate.getDate() + 1)) {
+                    focusNow = generate.id;
+                    if (event.key !== "ArrowRight") {
+                        showShift();
+                    }
+                }
+            }
+
+            // 上矢印押下時
+            if (event.key == "ArrowUp" && !focusNow.includes(half)) {
+                if (focusNow.includes("Start")) {
+                    focusNow = Number(focusNow.replace("Start", "")) - 1 + "Start";
+                } else if (focusNow.includes("End")) {
+                    focusNow = Number(focusNow.replace("End", "")) - 1 + "End";
+                }
+            }
+
+            // Enterキー，矢印キー押下で対応する入力欄へフォーカス
+            if (event.key == "Enter" || event.key.includes("Arrow")) {
+                document.getElementById(focusNow).focus();
+            }
+        });
