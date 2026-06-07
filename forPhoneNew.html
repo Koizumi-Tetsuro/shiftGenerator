@@ -36,14 +36,12 @@
             width: 45vw;
         }
 
-        .leftInput, .rightInput{
-            margin-bottom: 1vh;
+        .inputRow {
+            margin-bottom: 1.5vh;
         }
 
         .select {
-            display: flex;
             margin-bottom: 2vh;
-            justify-content: center;
             font-size: 4vw;
         }
 
@@ -69,13 +67,17 @@
         button {
             font-size: 4vw;
             cursor: pointer;
-            margin-top: 1.3vh;
+        }
+        
+        #generate {            
+            margin-top: 3vh;
             margin-bottom: 1.3vh;
         }
-
+        
         #openLine {
             background-color: #06C755;
             color: white;
+            margin-bottom: 5vh;
         }
     </style>
 
@@ -211,12 +213,7 @@ OFF希望 -> 空欄
             let parent = document.getElementById("left");
             for (let i = half; i <= lastdate.getDate(); i++) {
                 var formRow = document.createElement("div");
-
-                if(i < half + 9){
-                    formRow.setAttribute("class", "leftInput")
-                }else{
-                    formRow.setAttribute("class", "rightInput")
-                }
+                formRow.setAttribute("class", "inputRow")
                 
                 if(i == half + 9){
                     parent = document.getElementById("right");
@@ -227,7 +224,7 @@ OFF希望 -> 空欄
                 var dateLabel = document.createElement("label");
                 var newContent = document.createTextNode(i + "(" + japaneseDay[outputDay] + ")");
                 dateLabel.appendChild(newContent);
-                parent.append(dateLabel);
+                formRow.append(dateLabel);
 
                 var inputStart = document.createElement("input");
                 inputStart.setAttribute("type", "text");
@@ -235,18 +232,18 @@ OFF希望 -> 空欄
                 inputStart.setAttribute("id", i + "Start");
                 inputStart.setAttribute("placeholder", " OFF ");
                 inputStart.setAttribute("inputmode", "numeric");
-                parent.append(inputStart);
+                formRow.append(inputStart);
 
                 var rightTo = document.createElement("label");
                 rightTo.appendChild(document.createTextNode("～"));
-                parent.append(rightTo);
+                formRow.append(rightTo);
 
                 var inputEnd = document.createElement("input");
                 inputEnd.setAttribute("type", "text");
                 inputEnd.setAttribute("class", "input");
                 inputEnd.setAttribute("id", i + "End");
                 inputEnd.setAttribute("inputmode", "numeric");
-                parent.append(inputEnd);
+                formRow.append(inputEnd);
 
                 outputDay = (outputDay + 1) % 7;
             }
@@ -277,7 +274,7 @@ OFF希望 -> 空欄
 
         // 初期化
         function reset() {
-            document.querySelectorAll(".formRow").forEach(formRow => formRow.remove());
+            document.querySelectorAll(".inputRow").forEach(el => el.remove());
             addDate();
         }
 
