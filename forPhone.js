@@ -4,7 +4,7 @@ const today = new Date();
 const year = document.getElementById("year");
 const month = document.getElementById("month");
 const generate = document.getElementById("generate");
-const openLine = document.getElementById("openLine");
+const copy = document.getElementById("copy");
 const output = document.getElementById("output");
 
 var dayOfWeek = 0;
@@ -39,9 +39,10 @@ generate.addEventListener("click", function () {
     showShift();
 });
 
-// LINEを開く
-openLine.addEventListener("click", function () {
-    location.href = "https://line.me/R/msg/text/?" + encodeURIComponent(output.value);
+// コピーしてLINEを開く
+copy.addEventListener("click", function () {
+    navigator.clipboard.writeText(output.value);
+    window.open("https://line.me/R/msg/text/", "_blank");
 });
 
 // 入力欄の生成
