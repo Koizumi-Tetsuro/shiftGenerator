@@ -180,6 +180,8 @@ function showShift() {
 window.addEventListener("keydown", event => {
     let focusNow = document.activeElement.id;
 
+    output.value += event.key + "\n";
+
     // Enterキー，下矢印押下時
     if (event.key == "Enter" || event.key == "ArrowDown") {
         if (focusNow.includes("Start")) {
