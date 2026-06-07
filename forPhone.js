@@ -141,7 +141,7 @@ function reset() {
 // 入力値を時刻表示(hh:mm)へ変換
 function splitTime(value) {
     if (!Number.isNaN(Number(value)) && (value >= 0 && value <= 2400)) {
-        str = String(Number(value));
+        let str = String(Number(value));
         return (str.slice(0, -2) + ":" + str.slice(-2));
     } else {
         return "不正";
