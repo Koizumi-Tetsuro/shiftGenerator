@@ -199,5 +199,7 @@ window.addEventListener("keydown", event => {
                 showShift();
             }
         }
+        
+        document.getElementById(focusNow).focus();
     }
 });
