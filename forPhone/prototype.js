@@ -158,3 +158,22 @@ function showShift() {
         outputDay = (outputDay + 1) % 7;
     }
 }
+
+// 入力欄のフォーカス遷移
+window.addEventListener("keydown", event => {
+    let focusNow = document.activeElement.id;
+
+    // Enterキー，右矢印押下時
+    if (event.key == "Enter") {
+        if (focusNow.includes("Start")) {
+            if (document.getElementById(focusNow).value == "") {
+                focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
+            } else {
+                focusNow = focusNow.replace("Start", "") + "End"
+            }
+        } else if (focusNow.includes("End")) {
+            focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
+        }
+        document.getElementById(focusNow).focus();
+    }
+});
