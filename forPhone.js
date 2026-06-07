@@ -23,10 +23,10 @@ nextYear.text = today.getFullYear() + 1;
 yearSelect.add(thisYear);
 yearSelect.add(nextYear);
 
-output.value = 1;
 
 setmonth();
 addDate();
+output.value = 1;
 
 // 期間に変更があった場合に更新
 document.querySelectorAll(".select").forEach(select => {
