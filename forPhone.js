@@ -23,7 +23,6 @@ nextYear.text = today.getFullYear() + 1;
 yearSelect.add(thisYear);
 yearSelect.add(nextYear);
 
-
 setmonth();
 addDate();
 
