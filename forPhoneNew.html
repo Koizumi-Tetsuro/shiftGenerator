@@ -203,8 +203,10 @@ OFF希望 -> 空欄
 
         // 確定ボタン押下でシフト生成
         generate.addEventListener("click", function () {
-            const bottom = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            window.scrollTo(0, bottom);
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
             showShift();
         });
 
