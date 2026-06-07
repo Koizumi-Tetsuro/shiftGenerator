@@ -26,7 +26,6 @@ yearSelect.add(nextYear);
 
 setmonth();
 addDate();
-output.value = 1;
 
 // 期間に変更があった場合に更新
 document.querySelectorAll(".select").forEach(select => {
@@ -182,10 +181,8 @@ function showShift() {
 window.addEventListener("keydown", event => {
     let focusNow = document.activeElement.id;
 
-    output.value += event.key + "\n";
-
-    // Enterキー，下矢印押下時
-    if (event.key == "Enter" || event.key == "ArrowDown") {
+    // Enterキー押下時
+    if (event.key == "Enter") {
         if (focusNow.includes("Start")) {
             if (document.getElementById(focusNow).value == "") {
                 focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
@@ -202,19 +199,5 @@ window.addEventListener("keydown", event => {
                 showShift();
             }
         }
-    }
-
-    // 上矢印押下時
-    if (event.key == "ArrowUp" && !focusNow.includes(half)) {
-        if (focusNow.includes("Start")) {
-            focusNow = Number(focusNow.replace("Start", "")) - 1 + "Start";
-        } else if (focusNow.includes("End")) {
-            focusNow = Number(focusNow.replace("End", "")) - 1 + "End";
-        }
-    }
-
-    // Enterキー，矢印キー押下で対応する入力欄へフォーカス
-    if (event.key == "Enter" || event.key.includes("Arrow")) {
-        document.getElementById(focusNow).focus();
     }
 });
