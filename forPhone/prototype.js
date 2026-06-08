@@ -140,6 +140,7 @@ function splitTime(value) {
             return (str.slice(0, -2) + ":" + str.slice(-2));
         }
     }
+
     termination = false;
     return "不正";
 }
@@ -171,7 +172,7 @@ function showShift() {
             outputStart = splitTime(inputStart) + "～";
             if(inputEnd !== ""){
                 outputEnd = splitTime(inputEnd);
-                if(inputStart >= inputEnd){
+                if(Number(inputStart) >= Number(inputEnd)){
                     termination = false;
                     outputEnd = "不正"
                 }
