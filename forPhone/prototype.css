@@ -69,6 +69,12 @@ button {
     margin-bottom: 5vh;
 }
 
-footer {
+.updateinfo {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
     font-size: 3vw;
+}
+
+.message {
+    font-size: 2vw;
 }
