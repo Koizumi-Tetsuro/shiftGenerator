@@ -7,16 +7,16 @@ const generate = document.getElementById("generate");
 const openLine = document.getElementById("openLine");
 const output = document.getElementById("output");
 
-var dayOfWeek = 0;
-var half = 1;
-var lastdate = 20;
+let dayOfWeek = 0;
+let half = 1;
+let lastdate = 20;
 
-var yearSelect = document.getElementById("year");
-var thisYear = document.createElement("option");
+let yearSelect = document.getElementById("year");
+let thisYear = document.createElement("option");
 thisYear.value = today.getFullYear();
 thisYear.text = today.getFullYear();
 
-var nextYear = document.createElement("option");
+let nextYear = document.createElement("option");
 nextYear.value = today.getFullYear() + 1;
 nextYear.text = today.getFullYear() + 1;
 
@@ -159,12 +159,11 @@ function showShift() {
     }
 }
 
-// 入力欄のフォーカス遷移
-window.addEventListener("keydown", event => {
+// 入力後，自動でフォーカス遷移
+window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
 
-    // Enterキー，右矢印押下時
-    if (event.key == "Enter") {
+    if ((focusNow.includes("Start") || focusNow.includes("End")) && document.getElementById(focusNow).value > 250) {
         if (focusNow.includes("Start")) {
             if (document.getElementById(focusNow).value == "") {
                 focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
@@ -174,6 +173,11 @@ window.addEventListener("keydown", event => {
         } else if (focusNow.includes("End")) {
             focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
         }
+        
+        if (focusNow.includes(lastdate.getDate() + 1)) {
+            focusNow = generate.id;
+        }
+        
         document.getElementById(focusNow).focus();
     }
 });
