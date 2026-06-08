@@ -74,6 +74,7 @@ button {
 }
 
 .updateinfo {
-    margin-top: 2vh;
+    margin-top: 1vh;
     font-size: 3vw;
+    background-color: azure;
 }
