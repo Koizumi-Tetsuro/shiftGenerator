@@ -28,8 +28,6 @@ yearSelect.add(nextYear);
 setmonth();
 addDate();
 
-alert("入力は整数4桁に限ります\n\n9:00希望 -> 0900\n14:30希望 -> 1430\nOFF希望 -> 空欄(+ BackSpace)");
-
 // 期間に変更があった場合に更新
 document.querySelectorAll(".select").forEach(select => {
     select.addEventListener("change", event => {
@@ -129,9 +127,9 @@ function reset() {
 
 // 入力値を時刻表示(hh:mm)へ変換
 function splitTime(value) {
-    if(String(value).length == 4 && !String(value).includes(".")){
+    if(String(value).length >= 3 && !String(value).includes(".")){
         if (!Number.isNaN(Number(value)) && (value >= 0 && value <= 2400)) {
-            if(value <= 999){
+            if(String(value).length == 4 && value <= 999){
                 value = value.slice(1, 4);
             }
             if(Number(value.slice(-2)) > 59){
@@ -187,15 +185,14 @@ function showShift() {
 // フォーカス遷移
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
-    let inputDone = document.getElementById(focusNow).value.length == 4;
-    
+
     if (focusNow.includes("Start")) {
-        if(inputDone){
+        if(document.getElementById(focusNow).value > 240){
             focusNow = focusNow.replace("Start", "End");
         }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
-    } else if (focusNow.includes("End") && inputDone) {
+    } else if (focusNow.includes("End") && document.getElementById(focusNow).value > 240) {
         focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
     }
     
