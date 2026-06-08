@@ -162,22 +162,26 @@ function showShift() {
 // 入力後，自動でフォーカス遷移
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
-
-    if ((focusNow.includes("Start") || focusNow.includes("End")) && document.getElementById(focusNow).value > 250) {
-        if (focusNow.includes("Start")) {
-            if (document.getElementById(focusNow).value == "") {
-                focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
-            } else {
-                focusNow = focusNow.replace("Start", "") + "End"
+    
+    if (focusNow.includes("Start")) {
+        if(document.getElementById(focusNow).value > 250){
+            if (document.getElementById(focusNow).value !== "") {
+                focusNow = focusNow.replace("Start", "End");
             }
-        } else if (focusNow.includes("End")) {
-            focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
         }
-        
-        if (focusNow.includes(lastdate.getDate() + 1)) {
-            focusNow = generate.id;
+        if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
+            focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
-        
+    } else if (focusNow.includes("End") && document.getElementById(focusNow).value > 250) {
+        focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
+    }
+    
+    if (focusNow.includes(lastdate.getDate() + 1)) {
+        focusNow = generate.id;
+    }
+
+    if(focusNow.includes("Start") || focusNow.includes("End") || focusNow == generate.id){
         document.getElementById(focusNow).focus();
     }
+    
 });
