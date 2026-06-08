@@ -69,6 +69,10 @@ button {
     margin-bottom: 5vh;
 }
 
+.message {
+    font-size: 1.5vw;
+}
+
 .updateinfo {
     margin-top: 2vh;
     font-size: 3vw;
