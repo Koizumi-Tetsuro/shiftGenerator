@@ -45,7 +45,10 @@ generate.addEventListener("click", function () {
 
 // LINEを開く
 openLine.addEventListener("click", function () {
-    location.href = "https://line.me/R/msg/text/?" + encodeURIComponent(output.value);
+    if(output.value == ""){
+        showShift();
+    }
+    location.href = "https://line.me/R/msg/text/?" + encodeURIComponent(output.value);    
 });
 
 // 入力欄の生成
