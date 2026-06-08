@@ -168,7 +168,7 @@ function showShift() {
             inputStart = splitTime(document.getElementById(i + "Start").value) + "～";
             if(document.getElementById(i + "End").value !== ""){
                 inputEnd = splitTime(document.getElementById(i + "End").value);
-            }else{
+            }else if(termination){
                 inputEnd = "FREE";
             }
         }
@@ -186,6 +186,8 @@ function showShift() {
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
 
+    // 店舗営業が5:30～21:30なので，入力が240より大きければフォーカス遷移
+    // (2:00，0:00などの入力は考慮しない)
     if (focusNow.includes("Start")) {
         if(document.getElementById(focusNow).value > 240){
             focusNow = focusNow.replace("Start", "End");
