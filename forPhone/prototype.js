@@ -28,6 +28,8 @@ yearSelect.add(nextYear);
 setmonth();
 addDate();
 
+alert("入力は整数4桁に限ります\n\n9:00希望 -> 0900\n14:30希望 -> 1430\nOFF希望 -> 空欄(+ BackSpace)");
+
 // 期間に変更があった場合に更新
 document.querySelectorAll(".select").forEach(select => {
     select.addEventListener("change", event => {
