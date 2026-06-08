@@ -11,8 +11,9 @@ let dayOfWeek = 0;
 let half = 1;
 let lastdate = 20;
 
-let yearSelect = document.getElementById("year");
+let termination = true;
 
+let yearSelect = document.getElementById("year");
 let thisYear = document.createElement("option");
 thisYear.value = today.getFullYear();
 thisYear.text = today.getFullYear();
@@ -35,7 +36,7 @@ document.querySelectorAll(".select").forEach(select => {
     });
 });
 
-// 確定ボタン押下でシフト生成，ページ最下部へスクロール
+// 確定ボタン押下でシフト生成
 generate.addEventListener("click", function () {
     window.scrollTo({
         top: document.body.scrollHeight,
@@ -44,7 +45,7 @@ generate.addEventListener("click", function () {
     showShift();
 });
 
-// LINEへ転送
+// LINEを開く
 openLine.addEventListener("click", function () {
     if(output.value == ""){
         showShift();
@@ -126,12 +127,21 @@ function reset() {
 
 // 入力値を時刻表示(hh:mm)へ変換
 function splitTime(value) {
-    if (!Number.isNaN(Number(value)) && (value >= 0 && value <= 2400)) {
-        let str = String(Number(value));
-        return (str.slice(0, -2) + ":" + str.slice(-2));
-    } else {
-        return "不正";
+    if(String(value).length == 4 && !String(value).includes(".")){
+        if (!Number.isNaN(Number(value)) && (value >= 0 && value <= 2400)) {
+            if(value <= 999){
+                value = value.slice(1, 4);
+            }
+            if(Number(value.slice(-2)) > 59){
+                termination = false;
+                return "不正";
+            }
+            let str = String(value);
+            return (str.slice(0, -2) + ":" + str.slice(-2));
+        }
     }
+    termination = false;
+    return "不正";
 }
 
 // 生成スケジュール初日，最終日設定
@@ -154,35 +164,44 @@ function showShift() {
         if (document.getElementById(i + "Start").value == "") {
             inputStart = "OFF";
             inputEnd = "";
-        } else {
+        }  else {
             inputStart = splitTime(document.getElementById(i + "Start").value) + "～";
-            inputEnd = splitTime(document.getElementById(i + "End").value);
+            if(document.getElementById(i + "End").value !== ""){
+                inputEnd = splitTime(document.getElementById(i + "End").value);
+            }else{
+                inputEnd = "FREE";
+            }
         }
         output.value += (i + "(" + japaneseDay[outputDay] + ")" + inputStart + inputEnd + ((i < lastdate.getDate()) ? "\n" : ""));
         outputDay = (outputDay + 1) % 7;
+    }
+
+    if(!termination){
+        alert("不正な入力値があります");
+        termination = true;
     }
 }
 
 // フォーカス遷移
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
+    let inputDone = document.getElementById(focusNow).value.length == 4;
     
     if (focusNow.includes("Start")) {
-        if(document.getElementById(focusNow).value > 250){
+        if(inputDone){
             focusNow = focusNow.replace("Start", "End");
         }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
-    } else if (focusNow.includes("End") && document.getElementById(focusNow).value > 250) {
+    } else if (focusNow.includes("End") && inputDone) {
         focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
     }
     
     if (focusNow.includes(lastdate.getDate() + 1)) {
         focusNow = generate.id;
-        document.getElementById(focusNow).click();
     }
 
-    if(focusNow.includes("Start") || focusNow.includes("End")){
+    if(focusNow.includes("Start") || focusNow.includes("End") || focusNow == generate.id){
         document.getElementById(focusNow).focus();
     }
     
