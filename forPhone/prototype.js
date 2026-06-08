@@ -157,22 +157,30 @@ function date() {
 function showShift() {
     let outputDay = dayOfWeek;
     output.value = (month.value + "月" + (document.getElementById("selectHalf").value == "first" ? "前半" : "後半") + "の希望シフトです\n\n");
-    let inputStart = "";
-    let inputEnd = "";
+    let outputStart = "";
+    let outputEnd = "";
 
     for (let i = half; i <= lastdate.getDate(); i++) {
-        if (document.getElementById(i + "Start").value == "") {
-            inputStart = "OFF";
-            inputEnd = "";
+        let inputStart = document.getElementById(i + "Start").value;
+        let inputEnd = document.getElementById(i + "End").value;
+
+        if (inputStart == "") {
+            outputStart = "OFF";
+            outputEnd = "";
         }  else {
-            inputStart = splitTime(document.getElementById(i + "Start").value) + "～";
-            if(document.getElementById(i + "End").value !== ""){
-                inputEnd = splitTime(document.getElementById(i + "End").value);
+            outputStart = splitTime(inputStart) + "～";
+            if(inputEnd !== ""){
+                outputEnd = splitTime(inputEnd);
+                if(inputStart >= inputEnd){
+                    termination = false;
+                    outputEnd = "不正"
+                }
             }else if(termination){
-                inputEnd = "FREE";
+                outputEnd = "FREE";
             }
         }
-        output.value += (i + "(" + japaneseDay[outputDay] + ")" + inputStart + inputEnd + ((i < lastdate.getDate()) ? "\n" : ""));
+
+        output.value += (i + "(" + japaneseDay[outputDay] + ")" + outputStart + outputEnd + ((i < lastdate.getDate()) ? "\n" : ""));
         outputDay = (outputDay + 1) % 7;
     }
 
