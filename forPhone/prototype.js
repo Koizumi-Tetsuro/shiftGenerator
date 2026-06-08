@@ -179,9 +179,10 @@ window.addEventListener("keyup", event => {
     
     if (focusNow.includes(lastdate.getDate() + 1)) {
         focusNow = generate.id;
+        document.getElementById(focusNow).click();
     }
 
-    if(focusNow.includes("Start") || focusNow.includes("End") || focusNow == generate.id){
+    if(focusNow.includes("Start") || focusNow.includes("End")){
         document.getElementById(focusNow).focus();
     }
     
