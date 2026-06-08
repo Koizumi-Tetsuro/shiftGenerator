@@ -159,17 +159,14 @@ function showShift() {
     }
 }
 
-// 入力後，自動でフォーカス遷移
+// フォーカス遷移
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
     
     if (focusNow.includes("Start")) {
         if(document.getElementById(focusNow).value > 250){
-            if (document.getElementById(focusNow).value !== "") {
-                focusNow = focusNow.replace("Start", "End");
-            }
-        }
-        if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
+            focusNow = focusNow.replace("Start", "End");
+        }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
     } else if (focusNow.includes("End") && document.getElementById(focusNow).value > 250) {
