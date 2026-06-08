@@ -12,6 +12,7 @@ let half = 1;
 let lastdate = 20;
 
 let yearSelect = document.getElementById("year");
+
 let thisYear = document.createElement("option");
 thisYear.value = today.getFullYear();
 thisYear.text = today.getFullYear();
@@ -34,7 +35,7 @@ document.querySelectorAll(".select").forEach(select => {
     });
 });
 
-// 確定ボタン押下でシフト生成
+// 確定ボタン押下でシフト生成，ページ最下部へスクロール
 generate.addEventListener("click", function () {
     window.scrollTo({
         top: document.body.scrollHeight,
@@ -43,7 +44,7 @@ generate.addEventListener("click", function () {
     showShift();
 });
 
-// LINEを開く
+// LINEへ転送
 openLine.addEventListener("click", function () {
     if(output.value == ""){
         showShift();
@@ -57,7 +58,7 @@ function addDate() {
     let outputDay = dayOfWeek;
     let parent = document.getElementById("left");
     for (let i = half; i <= lastdate.getDate(); i++) {
-        var formRow = document.createElement("div");
+        let formRow = document.createElement("div");
         formRow.setAttribute("class", "inputRow")
         
         if(i == half + 9){
@@ -66,12 +67,12 @@ function addDate() {
 
         parent.append(formRow);
 
-        var dateLabel = document.createElement("label");
-        var newContent = document.createTextNode(i + "(" + japaneseDay[outputDay] + ")");
+        let dateLabel = document.createElement("label");
+        let newContent = document.createTextNode(i + "(" + japaneseDay[outputDay] + ")");
         dateLabel.appendChild(newContent);
         formRow.append(dateLabel);
 
-        var inputStart = document.createElement("input");
+        let inputStart = document.createElement("input");
         inputStart.setAttribute("type", "text");
         inputStart.setAttribute("class", "input");
         inputStart.setAttribute("id", i + "Start");
@@ -79,11 +80,11 @@ function addDate() {
         inputStart.setAttribute("inputmode", "numeric");
         formRow.append(inputStart);
 
-        var rightTo = document.createElement("label");
+        let rightTo = document.createElement("label");
         rightTo.appendChild(document.createTextNode("～"));
         formRow.append(rightTo);
 
-        var inputEnd = document.createElement("input");
+        let inputEnd = document.createElement("input");
         inputEnd.setAttribute("type", "text");
         inputEnd.setAttribute("class", "input");
         inputEnd.setAttribute("id", i + "End");
@@ -136,9 +137,9 @@ function splitTime(value) {
 // 生成スケジュール初日，最終日設定
 function date() {
     half = document.getElementById("selectHalf").value == "first" ? 1 : 16;
-    var firstdate = new Date(year.value, month.value - 1, half);
+    let firstdate = new Date(year.value, month.value - 1, half);
     dayOfWeek = firstdate.getDay();
-    var last = (half == 1 ? 15 : 0);
+    let last = (half == 1 ? 15 : 0);
     lastdate = new Date(year.value, month.value - last / 15, last);
 }
 
