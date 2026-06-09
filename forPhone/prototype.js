@@ -198,12 +198,12 @@ window.addEventListener("keyup", event => {
     // 店舗営業が5:30～21:30なので，入力が240より大きければフォーカス遷移
     // (2:00，0:00などの入力は考慮しない)
     if (focusNow.includes("Start")) {
-        if(document.getElementById(focusNow).value > 240){
+        if(document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4){
             focusNow = focusNow.replace("Start", "End");
         }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
-    } else if (focusNow.includes("End") && document.getElementById(focusNow).value > 240) {
+    } else if (focusNow.includes("End") && (document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4)) {
         focusNow = Number(focusNow.replace("End", "")) + 1 + "Start";
     }
     
