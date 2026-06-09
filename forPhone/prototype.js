@@ -158,10 +158,10 @@ function date() {
 function showShift() {
     let outputDay = dayOfWeek;
     output.value = (month.value + "月" + (document.getElementById("selectHalf").value == "first" ? "前半" : "後半") + "の希望シフトです\n\n");
-    let outputStart = "";
-    let outputEnd = "";
-
+    
     for (let i = half; i <= lastdate.getDate(); i++) {
+        let outputStart = "";
+        let outputEnd = "";
         let inputStart = document.getElementById(i + "Start").value;
         let inputEnd = document.getElementById(i + "End").value;
 
