@@ -12,6 +12,7 @@ let half = 1;
 let lastdate = 20;
 
 let termination = true;
+let goNext = true;
 
 let yearSelect = document.getElementById("year");
 let thisYear = document.createElement("option");
@@ -191,6 +192,17 @@ function showShift() {
     }
 }
 
+window.addEventListener("keydown", event =>{
+    let focusNow = document.activeElement.id;
+    if(event.key == "Backspace"){
+        if(document.getElementById(focusNow).value.length == 0){
+            goNext = true;
+        }else{
+            goNext = false;
+        }
+    }
+});
+
 // フォーカス遷移
 window.addEventListener("keyup", event => {
     let focusNow = document.activeElement.id;
@@ -200,7 +212,7 @@ window.addEventListener("keyup", event => {
     if (focusNow.includes("Start")) {
         if(document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4){
             focusNow = focusNow.replace("Start", "End");
-        }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace"){
+        }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace" && goNext){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
     } else if (focusNow.includes("End") && (document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4)) {
