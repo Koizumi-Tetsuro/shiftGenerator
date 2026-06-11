@@ -194,12 +194,10 @@ function showShift() {
 
 window.addEventListener("keydown", event =>{
     let focusNow = document.activeElement.id;
-    if(event.key == "Backspace"){
-        if(document.getElementById(focusNow).value.length == 0){
-            goNext = true;
-        }else{
-            goNext = false;
-        }
+    if(event.key == "Backspace" && document.getElementById(focusNow).value.length == 0){
+        goNext = true;
+    }else{
+        goNext = false
     }
 });
 
@@ -212,7 +210,7 @@ window.addEventListener("keyup", event => {
     if (focusNow.includes("Start")) {
         if(document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4){
             focusNow = focusNow.replace("Start", "End");
-        }else if(document.getElementById(focusNow).value == "" && event.key == "Backspace" && goNext){
+        }else if(goNext){
             focusNow = Number(focusNow.replace("Start", "")) + 1 + "Start";
         }
     } else if (focusNow.includes("End") && (document.getElementById(focusNow).value > 240 || document.getElementById(focusNow).value.length == 4)) {
